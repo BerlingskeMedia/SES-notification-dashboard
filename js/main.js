@@ -42,7 +42,9 @@ app.controller('BlogCtrl', function (/* $scope, $location, $http */) {
  * Controls the Bounces
  */
 app.controller('BounceCtrl', function (/* $scope, $location, $http */) {
-    console.log("Bounce Controller reporting for duty.");
+  console.log("Bounce Controller reporting for duty.");
+
+  $('#bounce-table').DataTable();
 });
 
 /**
