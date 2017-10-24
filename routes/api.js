@@ -1,5 +1,9 @@
-function scanRecursive(docClient, params, callback, aggregateData) {
+function scanRecursive(docClient, params, aggregateData, callback) {
+    console.log("Sending one scan request to AWS, SES-Notification");
     docClient.scan(params, function(err, data) {
+        if(err) {
+            console.log("Error", err);
+        }
 
         if(!aggregateData) {
             aggregateData = data;
@@ -16,11 +20,11 @@ function scanRecursive(docClient, params, callback, aggregateData) {
                 ,"notificationTime" : data["LastEvaluatedKey"]["notificationTime"]
             };
 
-            scanRecursive(docClient, params, callback, aggregateData);
+            scanRecursive(docClient, params, aggregateData, callback);
         }
         else {
             //console.log("GetItem succeeded:", JSON.stringify(aggregateData, null, 2));
-            console.log("Finished");
+            console.log("Finished scan requests to AWS, SES-Notification");
             callback('',aggregateData);
         }
     });
@@ -34,18 +38,18 @@ AWS.config.update({
     region: process.env.AWS_REGION
 });
 
-var docClient = new AWS.DynamoDB.DocumentClient();
-
 var dynamoDbTable = "SESNotifications";
 
-var params = {
-    TableName: dynamoDbTable
-    ,FilterExpression: 'notificationType = :valueNotificationType'
-    ,ExpressionAttributeValues : {':valueNotificationType' : "Bounce"}
-};
+var docClient = new AWS.DynamoDB.DocumentClient();
 
 exports.scan = function(req, res) {
-    scanRecursive(docClient, params, function(err, obj) {
+    var params = {
+        TableName: dynamoDbTable
+        ,FilterExpression: 'notificationType = :valueNotificationType'
+        ,ExpressionAttributeValues : {':valueNotificationType' : "Bounce"}
+    };
+
+    scanRecursive(docClient, params, undefined, function(err, obj) {
         res.json(obj);
     });
 };
