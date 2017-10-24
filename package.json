@@ -1,0 +1,36 @@
+{
+  "name": "SES-bounce-notification",
+  "version": "0.0.0",
+  "description": "Application for handling dashboard of mail bounce notifications",
+  "main": "app.js",
+  "dependencies": {
+    "aws-sdk": "~2.133.0",
+    "jquery": "~3.2.1",
+    "datatables.net-dt": "~1.10.16",
+    "http": "0.0.0",
+    "express": "~4.16.2",
+    "body-parser": "~1.18.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BerlingskeMedia/SES-notification-dashboard.git"
+  },
+  "keywords": [
+    "Daniel",
+    "dashboard",
+    "SES",
+    "bounce",
+    "mails",
+    "notification",
+    "customer-service"
+  ],
+  "author": "Daniel Jozie Kokott, Przemysław 'Semy' Zasoński, Marek Kalinowski",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/BerlingskeMedia/SES-notification-dashboard/issues"
+  }
+}
