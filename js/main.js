@@ -45,6 +45,28 @@ app.controller('BounceCtrl', function (/* $scope, $location, $http */) {
   console.log("Bounce Controller reporting for duty.");
 
   $('#bounce-table').DataTable();
+
+  $('#load-more').click(function() {
+    $(this).prop('disabled', true);
+    $.ajax({
+      url: "api/getBounces",
+      data: {
+        'lastEvalKey': $(this).attr('lastEvalKey'),
+      },
+      success: function(result){
+        $('#load-more').prop('disabled', false);
+        $("#bounce-table").DataTable().rows.add(result['data']).draw();
+
+        if (result['lastEvalKey']) {
+          $('#load-more').attr('lastEvalKey',JSON.stringify(result['lastEvalKey']));
+        } else {
+          $('#load-more').prop('disabled', true);
+          $('#load-more').removeAttr('lastEvalKey');
+          $('#load-more').val('No more to load');
+        }
+    }});
+  });
+
 });
 
 /**

@@ -30,6 +30,34 @@ function scanRecursive(docClient, params, aggregateData, callback) {
     });
 }
 
+function singleScan(docClient, params, callback) {
+  var dataSet = {
+    data : []
+  };
+
+  console.log("Sending one scan request to AWS, SES-Notification");
+  docClient.scan(params, function(err, data) {
+    if(err) {
+      console.log("Error", err);
+    }
+
+    for(i=0; i<data['Items'].length; i++) {
+        dataSet.data.push([
+          data['Items'][i]['notificationTime'],
+          data['Items'][i]['destinationAddress'],
+          data['Items'][i]['mail']['commonHeaders']['from'],
+          data['Items'][i]['mail']['commonHeaders']['messageId'],
+          data['Items'][i]['mail']['commonHeaders']['subject'],
+        ]);
+    }
+    if(data["LastEvaluatedKey"]) {
+      dataSet.lastEvalKey = data["LastEvaluatedKey"];
+    }
+
+    callback('0',dataSet);
+  });
+}
+
 var AWS = require("aws-sdk");
 
 AWS.config.update({
@@ -52,4 +80,21 @@ exports.scan = function(req, res) {
     scanRecursive(docClient, params, undefined, function(err, obj) {
         res.json(obj);
     });
+};
+
+exports.getBounces = function(req, res) {
+  var params = {
+    TableName: dynamoDbTable
+    ,FilterExpression: 'notificationType = :valueNotificationType'
+    ,ExpressionAttributeValues : {':valueNotificationType' : "Bounce"}
+  };
+
+  if(req.query.lastEvalKey) {
+    params["ExclusiveStartKey"] = JSON.parse(req.query.lastEvalKey);
+  }
+
+  singleScan(docClient, params, function(err, obj) {
+    //TODO: error handling
+    res.json(obj);
+  });
 };

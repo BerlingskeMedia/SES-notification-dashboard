@@ -13,6 +13,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.get('/api/scan', apiRoutes.scan);
+app.get('/api/getBounces', apiRoutes.getBounces);
 
 app.use(express.static(__dirname + '/'));
 // Here's the new code:
