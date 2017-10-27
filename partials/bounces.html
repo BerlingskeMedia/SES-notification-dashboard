@@ -1,22 +1,79 @@
 <div class="container">
 
+
     <div class="row">
-
         <div class="col-lg-12">
-            <h1 class="page-header">Bounce List
-                <small>List of bounced mails</small>
-            </h1>
-            <ol class="breadcrumb">
-                <li><a href="../index.html">Home</a>
-                </li>
-                <li class="active">Bounce List</li>
-            </ol>
+            <div class="panel panel-default text-center">
+                <div class="panel-heading">
+                    <strong>Filters</strong>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"> From</span>
+                                </div>
+                                <input type="date" id="date_from" name="date_from"
+                                       class="form-control search-filter"
+                                       placeholder="Date from">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"> To</span>
+                                </div>
+                                <input type="date" id="date_to" name="date_to"
+                                       class="form-control search-filter">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-user"> User email</span>
+                                </div>
+                                <input type="email" id="user_mail" name="user_mail"
+                                       class="form-control search-filter" placeholder="User email">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-cloud"> Sender mail</span>
+                                </div>
+                                <input type="email" id="sender_mail" name="sender_mail"
+                                       class="form-control search-filter" placeholder="Sender mail">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-envelope"> Email subject</span>
+                                </div>
+                                <input id="email_subject" name="email_subject"
+                                       class="form-control search-filter" placeholder="Subject">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-hdd"> Sent from</span>
+                                </div>
+                                <input id="sent_from" name="sent_from"
+                                       class="form-control search-filter" placeholder="Sent from">
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <button id="search" class="btn btn-default">Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
     </div>
 
     <div class="row">
-
         <div class="col-lg-12">
             <div class="panel panel-default text-center">
                 <div class="panel-heading">
@@ -24,48 +81,48 @@
                 </div>
 
                 <div class="panel-body">
-                    <input type="button" id="load-more" value="Load">
+                    <input type="button" id="load-more" class="btn btn-default" value="Load">
                     <table id="bounce-table">
                         <thead>
-                            <tr>
-                                <th>Notification Time</th>
-                                <th>User e-mail</th>
-                                <th>Sender e-mail</th>
-                                <th>Sender location</th>
-                                <th>Subject</th>
-                            </tr>
+                        <tr>
+                            <th>Notification Time</th>
+                            <th>User e-mail</th>
+                            <th>Sender e-mail</th>
+                            <th>Sender location</th>
+                            <th>Subject</th>
+                        </tr>
                         </thead>
                         <tfoot>
-                            <tr>
-                                <th>Notification Time</th>
-                                <th>User e-mail</th>
-                                <th>Sender e-mail</th>
-                                <th>Sender location</th>
-                                <th>Subject</th>
-                            </tr>
+                        <tr>
+                            <th>Notification Time</th>
+                            <th>User e-mail</th>
+                            <th>Sender e-mail</th>
+                            <th>Sender location</th>
+                            <th>Subject</th>
+                        </tr>
                         </tfoot>
                         <tbody>
-                            <tr>
-                                <td>2017-08-10</td>
-                                <td>example@invalid.com</td>
-                                <td>myTestServer@test.qa</td>
-                                <td>QA</td>
-                                <td>Wilkommen test</td>
-                            </tr>
-                            <tr>
-                                <td>2017-10-01</td>
-                                <td>semi@test.invalid</td>
-                                <td>myTestServer@test.qa</td>
-                                <td>kundeunivers</td>
-                                <td>Guten tag test</td>
-                            </tr>
-                            <tr>
-                                <td>2017-07-13</td>
-                                <td>daniel@csharp.net</td>
-                                <td>purchaseNotify@testing.qa</td>
-                                <td>QA3</td>
-                                <td>Purchase confirmation</td>
-                            </tr>
+                        <tr>
+                            <td>2017-08-10</td>
+                            <td>example@invalid.com</td>
+                            <td>myTestServer@test.qa</td>
+                            <td>QA</td>
+                            <td>Wilkommen test</td>
+                        </tr>
+                        <tr>
+                            <td>2017-10-01</td>
+                            <td>semi@test.invalid</td>
+                            <td>myTestServer@test.qa</td>
+                            <td>kundeunivers</td>
+                            <td>Guten tag test</td>
+                        </tr>
+                        <tr>
+                            <td>2017-07-13</td>
+                            <td>daniel@csharp.net</td>
+                            <td>purchaseNotify@testing.qa</td>
+                            <td>QA3</td>
+                            <td>Purchase confirmation</td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>

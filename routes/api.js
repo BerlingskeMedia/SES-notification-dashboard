@@ -1,3 +1,26 @@
+function dynamoParamBuilder(filters) {
+  var retArray = [];
+  for ( i = 0, l = filters.length; i < l; i++ ) {
+
+  }
+  Object.keys(filters).forEach(function (key) {
+    switch (key){
+      case 'date_from':
+        retArray['notificationTime'] = {
+          AttributeValueList: {
+            S: filters[key]
+          },
+          ComparisonOperator: 'GE'
+        };
+        break;
+      default:
+        break;
+    }
+  });
+
+  return retArray;
+}
+
 function scanRecursive(docClient, params, aggregateData, callback) {
     console.log("Sending one scan request to AWS, SES-Notification");
     docClient.scan(params, function(err, data) {
@@ -85,12 +108,30 @@ exports.scan = function(req, res) {
 exports.getBounces = function(req, res) {
   var params = {
     TableName: dynamoDbTable
-    ,FilterExpression: 'notificationType = :valueNotificationType'
-    ,ExpressionAttributeValues : {':valueNotificationType' : "Bounce"}
+    // ,FilterExpression: 'notificationType = :valueNotificationType'
+    // ,ExpressionAttributeValues : {':valueNotificationType' : "Bounce"}
   };
 
   if(req.query.lastEvalKey) {
     params["ExclusiveStartKey"] = JSON.parse(req.query.lastEvalKey);
+  }
+
+  if(req.query.appliedFilters) {
+    var parsedFilters = {};
+    var filters = req.query.appliedFilters.split("&");
+    for ( i = 0, l = filters.length; i < l; i++ ) {
+      temp = filters[i].split('=');
+      parsedFilters[temp[0]] = temp[1];
+    }
+    params['ScanFilter'] = dynamoParamBuilder(parsedFilters);
+    params['ScanFilter']['notificationType'] = {
+        AttributeValueList: {
+          S: 'Bounce'
+        },
+        ComparisonOperator: 'EQ'
+      };
+    console.log(parsedFilters);
+    console.log(params);
   }
 
   singleScan(docClient, params, function(err, obj) {

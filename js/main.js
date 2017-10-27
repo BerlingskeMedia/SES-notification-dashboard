@@ -46,22 +46,35 @@ app.controller('BounceCtrl', function (/* $scope, $location, $http */) {
 
   $('#bounce-table').DataTable();
 
+  $('#search').click(function () {
+
+    var filters = $('.search-filter').filter(function() { if($(this).val()) { return true; }}).serialize();
+
+    $('#load-more').attr('data-appliedFilters', filters);
+
+    $('#bounce-table').DataTable().clear();
+    $('#bounce-table').DataTable().draw();
+    $('#load-more').click();
+
+  });
+
   $('#load-more').click(function() {
     $(this).prop('disabled', true);
     $.ajax({
       url: "api/getBounces",
       data: {
-        'lastEvalKey': $(this).attr('lastEvalKey'),
+        'lastEvalKey': $(this).attr('data-lastEvalKey'),
+        'appliedFilters' : $(this).attr('data-appliedFilters')
       },
       success: function(result){
         $('#load-more').prop('disabled', false);
         $("#bounce-table").DataTable().rows.add(result['data']).draw();
 
         if (result['lastEvalKey']) {
-          $('#load-more').attr('lastEvalKey',JSON.stringify(result['lastEvalKey']));
+          $('#load-more').attr('data-lastEvalKey',JSON.stringify(result['lastEvalKey']));
         } else {
           $('#load-more').prop('disabled', true);
-          $('#load-more').removeAttr('lastEvalKey');
+          $('#load-more').removeAttr('data-lastEvalKey');
           $('#load-more').val('No more to load');
         }
     }});
