@@ -1,7 +1,8 @@
 function dynamoParamBuilder(filters) {
   var retArray = [];
-  for ( i = 0, l = filters.length; i < l; i++ ) {
-
+  if (filters['date_from'] && filters['date_to']) {
+    filters['date_between'] = [filters['date_from'], filters['date_to']];
+    delete filters['date_from'], filters['date_to'];
   }
   Object.keys(filters).forEach(function (key) {
     switch (key){
@@ -11,6 +12,20 @@ function dynamoParamBuilder(filters) {
             S: filters[key]
           },
           ComparisonOperator: 'GE'
+        };
+        break;
+      case 'date_to':
+        retArray['notificationTime'] = {
+          AttributeValueList: {
+            S: filters[key]
+          },
+          ComparisonOperator: 'LE'
+        };
+        break;
+      case 'date_between':
+        retArray['notificationTime'] = {
+          AttributeValueList: [filters[key][0], filters[key][1]],
+          ComparisonOperator: 'BETWEEN'
         };
         break;
       default:
