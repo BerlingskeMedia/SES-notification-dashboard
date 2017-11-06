@@ -68,42 +68,83 @@ function scanRecursive(docClient, params, aggregateData, callback) {
     });
 }
 
-function singleScan(docClient, params, callback) {
+function dataParser(data) {
     var dataSet = {
         data: []
     };
 
+    for (var i = 0; i < data['Items'].length; i++) {
+        var notificationTime = data['Items'][i]['notificationTime'];
+        notificationTime = notificationTime.substring(0, notificationTime.lastIndexOf("."));
+        notificationTime = notificationTime.replace(/T/gi, ' ');
+
+        var destinationAddress = data['Items'][i]['destinationAddress'];
+        var senderEMail = data['Items'][i]['mail']['commonHeaders']['from'];
+        var senderLocation = data['Items'][i]['mail']['commonHeaders']['messageId'];
+        senderLocation = senderLocation.substring(senderLocation.lastIndexOf("@") + 1, senderLocation.lastIndexOf(">"));
+        var subject = data['Items'][i]['mail']['commonHeaders']['subject'];
+
+        dataSet.data.push([
+            notificationTime,
+            destinationAddress,
+            senderEMail,
+            senderLocation,
+            subject,
+        ]);
+    }
+    if (data["LastEvaluatedKey"]) {
+        dataSet.lastEvalKey = data["LastEvaluatedKey"];
+    }
+
+    return dataSet;
+}
+
+// awsClientConnection.scan(params, function (err, data) {
+//     if (err) {
+//         console.log("Error", err);
+//     }
+//
+//     for (var i = 0; i < data['Items'].length; i++) {
+//         var notificationTime = data['Items'][i]['notificationTime'];
+//         notificationTime = notificationTime.substring(0, notificationTime.lastIndexOf("."));
+//         notificationTime = notificationTime.replace(/T/gi,' ');
+//
+//         var destinationAddress = data['Items'][i]['destinationAddress'];
+//         var senderEMail = data['Items'][i]['mail']['commonHeaders']['from'];
+//         var senderLocation = data['Items'][i]['mail']['commonHeaders']['messageId'];
+//         senderLocation = senderLocation.substring(senderLocation.lastIndexOf("@") + 1, senderLocation.lastIndexOf(">"));
+//         var subject = data['Items'][i]['mail']['commonHeaders']['subject'];
+//
+//         dataSet.data.push([
+//             notificationTime,
+//             destinationAddress,
+//             senderEMail,
+//             senderLocation,
+//             subject,
+//         ]);
+//     }
+//     if (data["LastEvaluatedKey"]) {
+//         dataSet.lastEvalKey = data["LastEvaluatedKey"];
+//     }
+//
+//     callback('0', dataSet);
+// });
+
+function singleScan(awsClientConnection, params, callback) {
     console.log("Sending one scan request to AWS, SES-Notification");
-    docClient.scan(params, function (err, data) {
-        if (err) {
-            console.log("Error", err);
-        }
 
-        for (var i = 0; i < data['Items'].length; i++) {
-            var notificationTime = data['Items'][i]['notificationTime'];
-            notificationTime = notificationTime.substring(0, notificationTime.lastIndexOf("."));
-            notificationTime = notificationTime.replace(/T/gi,' ');
+    var singleScanRequest = awsClientConnection.scan(params);
 
-            var destinationAddress = data['Items'][i]['destinationAddress'];
-            var senderEMail = data['Items'][i]['mail']['commonHeaders']['from'];
-            var senderLocation = data['Items'][i]['mail']['commonHeaders']['messageId'];
-            senderLocation = senderLocation.substring(senderLocation.lastIndexOf("@") + 1, senderLocation.lastIndexOf(">"));
-            var subject = data['Items'][i]['mail']['commonHeaders']['subject'];
-
-            dataSet.data.push([
-                notificationTime,
-                destinationAddress,
-                senderEMail,
-                senderLocation,
-                subject,
-            ]);
-        }
-        if (data["LastEvaluatedKey"]) {
-            dataSet.lastEvalKey = data["LastEvaluatedKey"];
-        }
-
-        callback('0', dataSet);
-    });
+    singleScanRequest.
+        on('success', function(response) {
+            console.log("Success!");
+            callback(null, response.data);
+        }).
+        on('error', function(response) {
+            console.log("Error!",response.error);
+            callback(response.error, null);
+        }).
+        send();
 }
 
 var AWS = require("aws-sdk");
@@ -130,11 +171,51 @@ exports.scan = function (req, res) {
     });
 };
 
+function recursiveScanForward(resultsAmount, connection, params, callback, aggregatedData) {
+    singleScan(connection, params, function (err, obj) {
+        if(!aggregatedData) {
+            aggregatedData = obj;
+        }
+        else {
+            aggregatedData["Items"] = aggregatedData["Items"].concat(obj["Items"]);
+            aggregatedData["Count"] += obj["Count"];
+            aggregatedData["LastEvaluatedKey"] = obj["LastEvaluatedKey"];
+        }
+
+        console.log(aggregatedData["Items"].length);
+        console.log(obj["Items"].length);
+
+        if(aggregatedData["Count"] < resultsAmount)
+        {
+            if(!aggregatedData["LastEvaluatedKey"]) {
+                callback(0, aggregatedData);
+            }
+            else {
+                params["ExclusiveStartKey"] = aggregatedData["LastEvaluatedKey"];
+                recursiveScanForward(resultsAmount, connection, params, callback, aggregatedData);
+            }
+        }
+        else
+        {
+            aggregatedData["Items"] = aggregatedData["Items"].slice(0,resultsAmount);
+
+            if(aggregatedData["Count"] !== resultsAmount){
+                aggregatedData["LastEvaluatedKey"] = {
+                    "notificationId": aggregatedData["Items"][aggregatedData["Items"].length-1]["notificationId"]
+                    ,"notificationTime" : aggregatedData["Items"][aggregatedData["Items"].length-1]["notificationTime"]
+                };
+            }
+
+            callback(0, aggregatedData);
+        }
+    });
+};
+
 exports.getBounces = function (req, res) {
+    var resultsAmount = 50;
+
     var params = {
         TableName: dynamoDbTable
-        // ,FilterExpression: 'notificationType = :valueNotificationType'
-        // ,ExpressionAttributeValues : {':valueNotificationType' : "Bounce"}
     };
 
     if (req.query.lastEvalKey) {
@@ -144,8 +225,8 @@ exports.getBounces = function (req, res) {
     if (req.query.appliedFilters) {
         var parsedFilters = {};
         var filters = req.query.appliedFilters.split("&");
-        for (i = 0, l = filters.length; i < l; i++) {
-            temp = filters[i].split('=');
+        for (var i = 0, l = filters.length; i < l; i++) {
+            var temp = filters[i].split('=');
             parsedFilters[temp[0]] = temp[1];
         }
         params['ScanFilter'] = dynamoParamBuilder(parsedFilters);
@@ -155,12 +236,10 @@ exports.getBounces = function (req, res) {
             },
             ComparisonOperator: 'EQ'
         };
-        console.log(parsedFilters);
-        console.log(params);
     }
 
-    singleScan(docClient, params, function (err, obj) {
-        //TODO: error handling
-        res.json(obj);
+    recursiveScanForward(resultsAmount, docClient, params, function (err, obj) {
+        // console.log(obj);
+        res.json(dataParser(obj));
     });
 };
