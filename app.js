@@ -12,7 +12,6 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
-app.get('/api/scan', apiRoutes.scan);
 app.get('/api/getBounces', apiRoutes.getBounces);
 
 app.use(express.static(__dirname + '/'));
