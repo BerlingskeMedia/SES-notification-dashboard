@@ -50,7 +50,8 @@ function urlDeserialize(unserializedString) {
 
 exports.prepareParams = function (request, dynamoDbTableName) {
     var params = {
-        TableName: dynamoDbTableName
+        TableName: dynamoDbTableName,
+        ScanFilter: {}
     };
 
     if (request.query.lastEvalKey) {
