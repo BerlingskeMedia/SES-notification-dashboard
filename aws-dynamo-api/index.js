@@ -20,7 +20,7 @@ function singleScan(awsClientConnection, params, callback) {
         callback(null, response.data);
     }).
     on('error', function(response) {
-        console.log("Error!",response.error);
+        console.log("Error!",response);
         callback(response.error, null);
     }).
     send();

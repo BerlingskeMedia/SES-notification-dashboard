@@ -5,6 +5,7 @@ function dynamoPrepareFilters(filters) {
         delete filters['date_from'], filters['date_to'];
     }
     Object.keys(filters).forEach(function (key) {
+        filters[key] =  decodeURIComponent(filters[key]);
         switch (key) {
             case 'date_from':
                 retArray['notificationTime'] = {
@@ -26,6 +27,14 @@ function dynamoPrepareFilters(filters) {
                 retArray['notificationTime'] = {
                     AttributeValueList: [filters[key][0], filters[key][1]],
                     ComparisonOperator: 'BETWEEN'
+                };
+                break;
+            case 'user_mail':
+                retArray['destinationAddress'] = {
+                    AttributeValueList: {
+                      S: filters[key]
+                    },
+                    ComparisonOperator: 'CONTAINS'
                 };
                 break;
             default:
