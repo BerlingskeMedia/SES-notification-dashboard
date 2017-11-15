@@ -57,10 +57,12 @@ function urlDeserialize(unserializedString) {
     return parsedFilters;
 }
 
-exports.prepareParams = function (request, dynamoDbTableName) {
+exports.prepareParams = function (request, dynamoDbTableName, dynamoDbTableIndexName) {
     var params = {
         TableName: dynamoDbTableName,
-        ScanFilter: {}
+        IndexName: dynamoDbTableIndexName,
+        KeyConditions: {},
+        QueryFilter: {}
     };
 
     if (request.query.lastEvalKey) {
@@ -69,10 +71,10 @@ exports.prepareParams = function (request, dynamoDbTableName) {
 
     if (request.query.appliedFilters) {
         var filters = urlDeserialize(request.query.appliedFilters);
-        params['ScanFilter'] = dynamoPrepareFilters(filters);
+        params['QueryFilter'] = dynamoPrepareFilters(filters);
     }
 
-    params['ScanFilter']['notificationType'] = {
+    params['KeyConditions']['notificationType'] = {
         AttributeValueList: {
             S: 'Bounce'
         },
@@ -103,7 +105,7 @@ exports.dataParser = function (data) {
             destinationAddress,
             senderEMail,
             senderLocation,
-            subject,
+            subject
         ]);
     }
     if (data["LastEvaluatedKey"]) {
