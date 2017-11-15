@@ -8,12 +8,35 @@ config.apiKeys = {
 
 config.indices = {
   bouncedTimeIndex: {
-    LastEvaluatedKeyFields: [
+    keyFields: [
         'notificationId',
         'notificationType',
         'notificationTime'
     ]
   }
+};
+
+config.dynamoKeyMap = {
+  date_from:
+      {
+        value: "notificationTime",
+        operator: '>='
+      },
+  date_to:
+      {
+        value: "notificationTime",
+        operator: '<='
+      },
+  date_between:
+      {
+        value: "notificationTime",
+        operator: "BETWEEN"
+      },
+  bounce:
+      {
+        value: "notificationType",
+        operator: "="
+      }
 };
 
 module.exports = config;

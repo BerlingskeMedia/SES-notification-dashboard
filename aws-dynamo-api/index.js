@@ -49,7 +49,7 @@ function awsRecursiveFetch(connection, params, fetchOperation, finishCallback, e
 
       if (aggregatedData["Count"] !== expectedHits) {
         aggregatedData["LastEvaluatedKey"] = {};
-        var indexConfig = config.indices[params["IndexName"]]["LastEvaluatedKeyFields"];
+        var indexConfig = config.indices[params["IndexName"]]["keyFields"];
         var lastItem = aggregatedData["Items"][aggregatedData["Items"].length - 1];
         for (var i = 0; i < indexConfig.length; i++) {
           aggregatedData['LastEvaluatedKey'][indexConfig[i]] = lastItem[indexConfig[i]];
