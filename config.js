@@ -1,4 +1,4 @@
-var config = {};
+let config = {};
 
 config.apiKeys = {
     accessKeyId: process.env.ACCESS_KEY_ID,
@@ -16,61 +16,36 @@ config.indices = {
     }
 };
 
-config.dynamoKeyMap = {
-    date_from: {
-        value: "notificationTime",
-        operator: '>='
-    },
-    date_to: {
-        value: "notificationTime",
-        operator: '<='
-    },
-    date_between: {
-        value: "notificationTime",
-        operator: "BETWEEN"
-    },
-    bounce: {
-        value: "notificationType",
-        operator: "="
-    },
-    user_mail: {
-        value: "destinationAddress",
-        operator: "="
-    },
-    sender_mail: {
-        value: "mail.commonHeaders.from[0]",
-        operator: "="
-    }
-};
-
-
 config.dynamoDefinitions = {
     date_from: {
-        dynamo_name: "notificationTime",
-        operator: '>='
+        attribute: "notificationTime",
+        operator: '>=',
+        formula: "%attribute %operator %argument"
     },
     date_to: {
-        dynamo_name: "notificationTime",
-        operator: '<='
+        attribute: "notificationTime",
+        operator: '<=',
+        formula: "%attribute %operator %argument"
     },
     date_between: {
-        dynamo_name: "notificationTime",
+        attribute: "notificationTime",
         operator: "BETWEEN",
-        type: "TripleFilter"
+        formula: "%attribute %operator %argument"
     },
     bounce: {
-        dynamo_name: "notificationType",
-        operator: "="
+        attribute: "notificationType",
+        operator: "=",
+        formula: "%attribute %operator %argument"
     },
     user_mail: {
-        dynamo_name: "destinationAddress",
+        attribute: "destinationAddress",
         operator: "contains",
-        type: "MethodFilter"
+        formula: "%operator(%attribute, %argument)"
     },
     sender_mail: {
-        dynamo_name: "mail.commonHeaders.from[0]",
+        attribute: "mail.commonHeaders.from[0]",
         operator: "contains",
-        type: "MethodFilter"
+        formula: "%operator(%attribute, %argument)"
     }
 };
 

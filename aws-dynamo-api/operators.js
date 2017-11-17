@@ -1,119 +1,114 @@
-function BasicFilter(attribute_name, operator, argument_name, argument_value) {
-    this.attribute_name = attribute_name;
-    this.argument_name = argument_name;
-    this.operator = operator;
-    this.argument_value = argument_value;
-
-    this.formula = "%attribute %operator %argument";
-
-    this.toString = function(){
-        var returned_string = this.formula;
-        returned_string = returned_string.replace("%attribute", "#"+this.argument_name);
-        returned_string = returned_string.replace("%operator", this.operator);
-        returned_string = returned_string.replace("%argument", ":"+this.argument_name);
-
-        return returned_string;
-    };
-
-    this.toAttributeValues = function(){
-        var returned_object = [];
-        returned_object[":"+this.argument_name] = this.argument_value;
-
-        return returned_object;
-    };
-
-    this.toAttributeNames = function(){
-        var returned_object = [];
-        returned_object["#"+this.argument_name] = this.attribute_name;
-
-        return returned_object;
-    };
+function filter(formula) {
+    return function (attribute_name, operator, argument_name) {
+        return formula.replace("%attribute", attribute_name)
+            .replace("%operator", operator)
+            .replace("%argument", argument_name);
+    }
 }
 
-function MethodFilter(attribute_name, operator, argument_name, argument_value) {
-    BasicFilter.call(this, attribute_name, operator, argument_name, argument_value);
-
-    this.formula = "%operator(%attribute, %argument)";
+function toAttributeValues(name, values) {
+    return function () {
+        return ((typeof values !== "object") ? [values] : [...values])
+            .map(function(item, i) { return ":"+name+""+i; })
+            .join(" AND ");
+    }
 }
 
-function TripleFilter(attribute_name, operator, argument_name, arguments, argument_concation) {
-    BasicFilter.call(this, attribute_name, operator, argument_name);
-
-    this.argument_concation = (typeof argument_concation !== "undefined") ? argument_concation : "AND";
-    this.argument0 = arguments[0];
-    this.argument1 = arguments[1];
-
-    this.formula = "%attribute %operator %argument0 %argument_concation %argument1";
-
-    this.toString = function(){
-        var returned_string = this.formula;
-        returned_string = returned_string.replace("%attribute", "#"+this.attribute_name);
-        returned_string = returned_string.replace("%operator", this.operator);
-        returned_string = returned_string.replace("%argument0", ":"+this.argument_name+"0");
-        returned_string = returned_string.replace("%argument_concation", this.argument_concation);
-        returned_string = returned_string.replace("%argument1", ":"+this.argument_name+"1");
-
-        return returned_string;
-    };
-
-    this.toAttributeValues = function(){
-        var returned_object = [];
-        returned_object[":"+this.argument_name+"0"] = this.argument0;
-        returned_object[":"+this.argument_name+"1"] = this.argument1;
-
-        return returned_object;
-    };
+function toAttributeValuesMap(name, values) {
+    return function () {
+        let arr = [];
+        ((typeof values !== "object") ? [values] : [...values]).forEach(function(item, i){
+            arr[":"+name+""+i] = item;
+        });
+        return arr;
+    }
 }
 
-function QueryConstructor(operators, concation) {
-    this.operators = operators;
-    this.concation = (typeof concation !== "undefined") ? concation : "AND";
+function toAttributeNames(attribute_absolute) {
+    return function () {
+        return attribute_absolute.split(".")
+            .map(function(item) { return "#"+item; })
+            .join(".");
+    }
+}
 
-    this.build = function(){
-        var returned_string = "";
-        var returned_attribute_values = [];
-        var returned_attribute_names = [];
-
-        for(var operator in this.operators) {
-            if(returned_string.length > 0) {
-                returned_string += " "+this.concation+" ";
-            }
-
-            returned_string += operators[operator].toString();
-            var attributeValues = operators[operator].toAttributeValues();
-            var attributeNames = operators[operator].toAttributeNames();
-
-
-            for(var item in attributeValues)
-            {
-                returned_attribute_values[item] = attributeValues[item];
-            }
-
-            for(var item in attributeNames)
-            {
-                returned_attribute_names[item] = attributeNames[item];
-            }
+function toAttributeNamesMap(attribute_absolute) {
+    return function () {
+        let arr = [];
+        for (const value of attribute_absolute.split(".")) {
+            arr["#"+value] = value;
         }
+        return arr;
+    }
+}
 
-        this.parsedQuery = returned_string;
-        this.parsedAttributeValues = returned_attribute_values;
-        this.parsedAttributeNames = returned_attribute_names;
+function filterParser(definitions, key_attributes){
+    return function(filters){
+        return Object.keys(filters).map(function(item) {
+            return {
+                is_key_attribute: ((key_attributes.indexOf(definitions[item]["attribute"]) !== -1)),
+                attribute: definitions[item]["attribute"],
+                operator: definitions[item]["operator"],
+                formula: definitions[item]["formula"],
+                values: filters[item],
+                attributeNamesMap: toAttributeNamesMap(definitions[item]["attribute"])(),
+                attributeValuesMap: toAttributeValuesMap(item,filters[item])(),
+                filter: filter(definitions[item]["formula"])(toAttributeNames(definitions[item]["attribute"])(),definitions[item]["operator"],toAttributeValues(item,filters[item])()),
+            };
+        });
     };
 }
 
-var factory = {};
+function parsedFiltersExpressionConcator(parsedFilters, is_key){
+    return parsedFilters
+        .filter(function(item) { return item.is_key_attribute === is_key; })
+        .map(function(item) { return item.filter; })
+        .join(" AND ");
+}
 
-factory.CreateOperator = function(type, params) {
-    if(type === "MethodFilter")
-        return new MethodFilter(params["attribute_name"], params["operator"], params["argument_name"], params["argument_value"]);
-    if(type === "TripleFilter")
-        return new TripleFilter(params["attribute_name"], params["operator"], params["argument_name"], params["argument_value"]);
+function parsedFiltersAttributeNamesConcator(parsedFilters){
+    let arr = [];
 
-    return new BasicFilter(params["attribute_name"], params["operator"], params["argument_name"], params["argument_value"]);
+    parsedFilters.forEach(function(item){
+        Object.keys(item.attributeNamesMap).forEach(function(key){
+            arr[key] = item.attributeNamesMap[key];
+        });
+    });
+
+    return arr;
+}
+
+function parsedFiltersAttributeValuesConcator(parsedFilters){
+    let arr = [];
+
+    parsedFilters.forEach(function(item){
+        Object.keys(item.attributeValuesMap).forEach(function(key){
+            arr[key] = item.attributeValuesMap[key];
+        });
+    });
+
+    return arr;
+}
+
+let parser = {};
+parser.Parse = function (definitions, keys, filters) {
+    return filterParser(definitions, keys)(filters);
 };
 
-factory.CreateQueryConstructor = function(operators, concation) {
-    return new QueryConstructor(operators, concation);
+parser.KeyConditionExpression = function(parsedFilters) {
+    return parsedFiltersExpressionConcator(parsedFilters, true);
 };
 
-module.exports = factory;
+parser.FilterExpression = function(parsedFilters) {
+    return parsedFiltersExpressionConcator(parsedFilters, false);
+};
+
+parser.ExpressionAttributeNames = function(parsedFilters) {
+    return parsedFiltersAttributeNamesConcator(parsedFilters);
+};
+
+parser.ExpressionAttributeValues = function(parsedFilters) {
+    return parsedFiltersAttributeValuesConcator(parsedFilters);
+};
+
+module.exports = parser;
