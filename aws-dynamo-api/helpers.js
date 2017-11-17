@@ -1,5 +1,5 @@
 var config = require('../config');
-var parser = require('./operators');
+var parser = require('./filterParser');
 
 function urlDeserialize(unserializedString) {
   let parsedFilters = {};
@@ -7,7 +7,7 @@ function urlDeserialize(unserializedString) {
   let filters = unserializedString.split("&");
   for (let i = 0, l = filters.length; i < l; i++) {
     let temp = filters[i].split('=');
-    parsedFilters[temp[0]] = temp[1];
+    parsedFilters[temp[0]] = decodeURIComponent(temp[1]);
   }
 
   return parsedFilters;
@@ -53,6 +53,7 @@ exports.prepareParams = function (request, dynamoDbTableName, dynamoDbTableIndex
     params['ExpressionAttributeNames'] = expressionAttributeNames;
   }
 
+  console.log(params);
   return params;
 };
 

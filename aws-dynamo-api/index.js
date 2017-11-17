@@ -62,7 +62,7 @@ function awsRecursiveFetch(connection, params, fetchOperation, finishCallback, e
 }
 
 exports.getBounces = function (request, response) {
-  var params = helpers.prepareParams(request, "SESNotifications", "bouncedTimeIndex");
+  var params = helpers.prepareParams(request, config.connectionData.tableName, config.connectionData.indexName);
 
   awsRecursiveFetch(dynamoDbClient, params,
       function (connection, params, callback) {
