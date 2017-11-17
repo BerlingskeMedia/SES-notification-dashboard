@@ -50,6 +50,7 @@ app.controller('BounceCtrl', function (/* $scope, $location, $http */) {
 
     var filters = $('.search-filter').filter(function() { if($(this).val()) { return true; }}).serialize();
 
+    $('#load-more').attr('data-lastevalkey', '');
     $('#load-more').attr('data-appliedFilters', filters);
 
     $('#bounce-table').DataTable().clear();
