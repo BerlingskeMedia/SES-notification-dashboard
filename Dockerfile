@@ -23,6 +23,7 @@ COPY ./partials /SES-bounce-notification/partials
 COPY ./routes /SES-bounce-notification/routes
 COPY ./templates /SES-bounce-notification/templates
 COPY ./node_modules /SES-bounce-notification/node_modules
+COPY ./config.js /SES-bounce-notification/config.js
 
 # Exposing our endpoint to Docker.
 EXPOSE 3000
