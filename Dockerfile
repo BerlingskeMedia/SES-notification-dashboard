@@ -24,9 +24,11 @@ COPY ./routes /SES-bounce-notification/routes
 COPY ./templates /SES-bounce-notification/templates
 COPY ./node_modules /SES-bounce-notification/node_modules
 COPY ./config.js /SES-bounce-notification/config.js
+COPY ./app.js /SES-bounce-notification/app.js
+COPY ./index.html /SES-bounce-notification/index.html
 
 # Exposing our endpoint to Docker.
 EXPOSE 3000
 
 # When starting a container with our image, this command will be run.
-CMD ["node", "/SES-bounce-notification/app.js"]
+CMD ["node", "app.js"]
