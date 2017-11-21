@@ -15,16 +15,8 @@ RUN wget -O - https://nodejs.org/dist/$NODE_VERSION/node-$NODE_VERSION-linux-x64
 WORKDIR /SES-bounce-notification
 
 # Copying the code into image. Be aware no config files are including.
-COPY ./aws-dynamo-api /SES-bounce-notification/aws-dynamo-api
-COPY ./css /SES-bounce-notification/css
-COPY ./js /SES-bounce-notification/js
-COPY ./partials /SES-bounce-notification/partials
-COPY ./routes /SES-bounce-notification/routes
-COPY ./templates /SES-bounce-notification/templates
+COPY ./app /SES-bounce-notification
 COPY ./node_modules /SES-bounce-notification/node_modules
-COPY ./config.js /SES-bounce-notification/config.js
-COPY ./app.js /SES-bounce-notification/app.js
-COPY ./index.html /SES-bounce-notification/index.html
 
 # Exposing our endpoint to Docker.
 EXPOSE 3000
