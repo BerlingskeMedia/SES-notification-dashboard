@@ -14,7 +14,7 @@ Running the app
 ```
 npm install //required only once after cloning
 . config.sh //required once every session
-node app.js
+node app/app.js
 ```
 
 App should default to localhost:3000
