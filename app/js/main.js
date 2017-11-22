@@ -7,65 +7,85 @@
  * Main AngularJS Web Application
  */
 var app = angular.module('tutorialWebApp', [
-  'ngRoute'
+    'ngRoute'
 ]);
 
 /**
  * Configure the Routes
  */
 app.config(['$routeProvider', function ($routeProvider) {
-  $routeProvider
+    $routeProvider
     // Home
-    .when("/", {templateUrl: "partials/bounces.html", controller: "BounceCtrl"})
-    // Pages
-    .when("/about", {templateUrl: "partials/about.html", controller: "PageCtrl"})
-    .when("/bounces", {templateUrl: "partials/bounces.html", controller: "BounceCtrl"})
-    // else 404
-    .otherwise("/404", {templateUrl: "partials/404.html", controller: "PageCtrl"});
+        .when("/", {
+            templateUrl: "partials/bounces.html",
+            controller: "BounceCtrl"
+        })
+        // Pages
+        .when("/about", {
+            templateUrl: "partials/about.html",
+            controller: "PageCtrl"
+        })
+        .when("/bounces", {
+            templateUrl: "partials/bounces.html",
+            controller: "BounceCtrl"
+        })
+        // else 404
+        .otherwise("/404", {
+            templateUrl: "partials/404.html",
+            controller: "PageCtrl"
+        });
 }]);
 
 /**
  * Controls the Bounces
  */
 app.controller('BounceCtrl', function (/* $scope, $location, $http */) {
-  console.log("Bounce Controller reporting for duty.");
+    console.log("Bounce Controller reporting for duty.");
 
-  $('#bounce-table').DataTable();
+    $('#bounce-table').DataTable();
 
-  $('#search').click(function () {
+    $('#search').click(function () {
 
-    var filters = $('.search-filter').filter(function() { if($(this).val()) { return true; }}).serialize();
+        var filters = $('.search-filter').filter(function () {
+            if ($(this).val()) {
+                return true;
+            }
+        }).serialize();
 
-    $('#load-more').attr('data-lastevalkey', '');
-    $('#load-more').attr('data-appliedFilters', filters);
-
-    $('#bounce-table').DataTable().clear();
-    $('#bounce-table').DataTable().draw();
-    $('#load-more').click();
-
-  });
-
-  $('#load-more').click(function() {
-    $(this).prop('disabled', true);
-    $.ajax({
-      url: "api/getBounces",
-      data: {
-        'lastEvalKey': $(this).attr('data-lastEvalKey'),
-        'appliedFilters' : $(this).attr('data-appliedFilters')
-      },
-      success: function(result){
+        $('#load-more').val('Load');
         $('#load-more').prop('disabled', false);
-        $("#bounce-table").DataTable().rows.add(result['data']).draw();
+        $('#load-more').attr('data-lastevalkey', '');
+        $('#load-more').attr('data-appliedFilters', filters);
 
-        if (result['lastEvalKey']) {
-          $('#load-more').attr('data-lastEvalKey',JSON.stringify(result['lastEvalKey']));
-        } else {
-          $('#load-more').prop('disabled', true);
-          $('#load-more').removeAttr('data-lastEvalKey');
-          $('#load-more').val('No more to load');
-        }
-    }});
-  });
+        $('#bounce-table').DataTable().clear();
+        $('#bounce-table').DataTable().draw();
+        $('#load-more').click();
+
+    });
+
+    $('#load-more').click(function () {
+        $(this).prop('disabled', true);
+        $.ajax({
+            url: "api/getBounces",
+            data: {
+                'lastEvalKey': $(this).attr('data-lastEvalKey'),
+                'appliedFilters': $(this).attr('data-appliedFilters')
+            },
+            success: function (result) {
+                $('#load-more').prop('disabled', false);
+                $("#bounce-table").DataTable().rows.add(result['data']).draw();
+
+                if (result['lastEvalKey']) {
+                    $('#load-more').attr('data-lastEvalKey', JSON.stringify(result['lastEvalKey']));
+                }
+                else {
+                    $('#load-more').prop('disabled', true);
+                    $('#load-more').removeAttr('data-lastEvalKey');
+                    $('#load-more').val('No more to load');
+                }
+            }
+        });
+    });
 
 });
 
@@ -73,15 +93,15 @@ app.controller('BounceCtrl', function (/* $scope, $location, $http */) {
  * Controls all other Pages
  */
 app.controller('PageCtrl', function (/* $scope, $location, $http */) {
-  console.log("Page Controller reporting for duty.");
+    console.log("Page Controller reporting for duty.");
 
-  // Activates the Carousel
-  $('.carousel').carousel({
-    interval: 5000
-  });
+    // Activates the Carousel
+    $('.carousel').carousel({
+        interval: 5000
+    });
 
-  // Activates Tooltips for Social Links
-  $('.tooltip-social').tooltip({
-    selector: "a[data-toggle=tooltip]"
-  })
+    // Activates Tooltips for Social Links
+    $('.tooltip-social').tooltip({
+        selector: "a[data-toggle=tooltip]"
+    })
 });
