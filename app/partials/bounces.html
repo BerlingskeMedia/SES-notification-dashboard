@@ -1,4 +1,4 @@
-<div class="container">
+<div bounce-table  ng-controller="BounceCtrl" class="container">
 <div class="panel panel-default" style="margin-top: 20px">
     <strong>Bounces</strong> – The recipient's mail server permanently rejected the email. This event corresponds to hard bounces.
     Soft bounces are only included when Amazon SES fails to deliver the email after retrying for a period of time.
@@ -6,73 +6,7 @@
 
     <div class="row">
         <div class="col-lg-12">
-            <div class="panel panel-default text-center">
-                <div class="panel-heading">
-                    <strong>Filters</strong>
-                </div>
-                <div class="panel-body">
-                    <div class="form-group">
-                        <div class="col-sm-3">
-                            <div class="input-group">
-                                <div class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"> From</span>
-                                </div>
-                                <input type="date" id="date_from" name="date_from"
-                                       class="form-control search-filter"
-                                       placeholder="Date from">
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="input-group">
-                                <div class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"> To</span>
-                                </div>
-                                <input type="date" id="date_to" name="date_to"
-                                       class="form-control search-filter">
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="input-group">
-                                <div class="input-group-addon">
-                                    <span class="glyphicon glyphicon-user"> User email</span>
-                                </div>
-                                <input type="email" id="user_mail" name="user_mail"
-                                       class="form-control search-filter" placeholder="User email">
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="input-group">
-                                <div class="input-group-addon">
-                                    <span class="glyphicon glyphicon-cloud"> Sender mail</span>
-                                </div>
-                                <input type="email" id="sender_mail" name="sender_mail"
-                                       class="form-control search-filter" placeholder="Sender mail">
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="input-group">
-                                <div class="input-group-addon">
-                                    <span class="glyphicon glyphicon-envelope"> Email subject</span>
-                                </div>
-                                <input id="email_subject" name="email_subject"
-                                       class="form-control search-filter" placeholder="Subject">
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="input-group">
-                                <div class="input-group-addon">
-                                    <span class="glyphicon glyphicon-hdd"> Sent from</span>
-                                </div>
-                                <input id="sent_from" name="sent_from"
-                                       class="form-control search-filter" placeholder="Sent from">
-                            </div>
-                        </div>
-                        <div class="col-sm-1">
-                            <button id="search" class="btn btn-default">Search</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div ng-include src="'partials/filters.html'"></div>
         </div>
     </div>
 

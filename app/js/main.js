@@ -27,11 +27,9 @@ app.config(['$routeProvider', function ($routeProvider) {
         })
         .when("/bounces", {
             templateUrl: "partials/bounces.html",
-            controller: "BounceCtrl"
         })
         .when("/complaints", {
             templateUrl: "partials/complaints.html",
-            controller: "ComplaintCtrl"
         })
         // else 404
         .otherwise("/404", {
@@ -43,34 +41,30 @@ app.config(['$routeProvider', function ($routeProvider) {
 /**
  * Controls the Bounces
  */
-app.controller('BounceCtrl', function (/* $scope, $location, $http */) {
+app.controller('BounceCtrl', function ( $scope, $filter/*, $location, $http */) {
     console.log("Bounce Controller reporting for duty.");
 
     $('#bounce-table').DataTable();
+    const currentDate = new Date();
+    $scope.date_from = $filter("date")(new Date(currentDate.setMonth(currentDate.getMonth()-1)), 'yyyy-MM-dd');
+    $scope.date_to = $filter("date")(Date.now(), 'yyyy-MM-dd');
+});
 
-    $('#search').click(function () {
+app.directive('bounceTable', [ '$timeout', function($timeout) {
+    return function(scope, element, attrs) {
+        $timeout(function (){
+            search();
+            loadMore();
+            console.log('JS included')
+        }, 500, false);
+    };
+}]);
 
-        var filters = $('.search-filter').filter(function () {
-            if ($(this).val()) {
-                return true;
-            }
-        }).serialize();
-
-        $('#load-more').val('Load');
-        $('#load-more').prop('disabled', false);
-        $('#load-more').attr('data-lastevalkey', '');
-        $('#load-more').attr('data-appliedFilters', filters);
-
-        $('#bounce-table').DataTable().clear();
-        $('#bounce-table').DataTable().draw();
-        $('#load-more').click();
-
-    });
-
+function loadMore(url) {
     $('#load-more').click(function () {
         $(this).prop('disabled', true);
         $.ajax({
-            url: "api/getBounces",
+            url: url || "api/getBounces",
             data: {
                 'lastEvalKey': $(this).attr('data-lastEvalKey'),
                 'appliedFilters': $(this).attr('data-appliedFilters')
@@ -90,69 +84,51 @@ app.controller('BounceCtrl', function (/* $scope, $location, $http */) {
             }
         });
     });
+}
+function search() {
+    $('#search').click(function () {
 
-    const currentDate = new Date();
-    document.getElementById('date_from').valueAsDate = new Date(currentDate.setMonth(currentDate.getMonth()-1));
-    document.getElementById('date_to').valueAsDate = new Date();
+        var filters = $('.search-filter').filter(function () {
+            if ($(this).val()) {
+                return true;
+            }
+        }).serialize();
 
-});
+        $('#load-more').val('Load');
+        $('#load-more').prop('disabled', false);
+        $('#load-more').attr('data-lastevalkey', '');
+        $('#load-more').attr('data-appliedFilters', filters);
+
+        $('#bounce-table').DataTable().clear();
+        $('#bounce-table').DataTable().draw();
+        $('#load-more').click();
+
+    });
+}
 
 /**
  * Controls the Complaints
  */
-app.controller('ComplaintCtrl', function (/* $scope, $location, $http */) {
+app.controller('ComplaintCtrl', function ( $scope, $filter/*$location, $http */) {
     console.log("Complaint Controller reporting for duty.");
 
     $('#bounce-table').DataTable();
 
-    $('#search').click(function () {
-
-        var filters = $('.search-filter').filter(function () {
-            if ($(this).val()) {
-                return true;
-            }
-        }).serialize();
-
-        $('#load-more').val('Load');
-        $('#load-more').prop('disabled', false);
-        $('#load-more').attr('data-lastevalkey', '');
-        $('#load-more').attr('data-appliedFilters', filters);
-
-        $('#bounce-table').DataTable().clear();
-        $('#bounce-table').DataTable().draw();
-        $('#load-more').click();
-
-    });
-
-    $('#load-more').click(function () {
-        $(this).prop('disabled', true);
-        $.ajax({
-            url: "api/getComplaints",
-            data: {
-                'lastEvalKey': $(this).attr('data-lastEvalKey'),
-                'appliedFilters': $(this).attr('data-appliedFilters')
-            },
-            success: function (result) {
-                $('#load-more').prop('disabled', false);
-                $("#bounce-table").DataTable().rows.add(result['data']).draw();
-
-                if (result['lastEvalKey']) {
-                    $('#load-more').attr('data-lastEvalKey', JSON.stringify(result['lastEvalKey']));
-                }
-                else {
-                    $('#load-more').prop('disabled', true);
-                    $('#load-more').removeAttr('data-lastEvalKey');
-                    $('#load-more').val('No more to load');
-                }
-            }
-        });
-    });
-
     const currentDate = new Date();
-    document.getElementById('date_from').valueAsDate = new Date(currentDate.setMonth(currentDate.getMonth()-1));
-    document.getElementById('date_to').valueAsDate = new Date();
+    $scope.date_from = $filter("date")(new Date(currentDate.setMonth(currentDate.getMonth()-1)), 'yyyy-MM-dd');
+    $scope.date_to = $filter("date")(Date.now(), 'yyyy-MM-dd');
 
 });
+
+app.directive('complaintTable', [ '$timeout', function($timeout) {
+    return function(scope, element, attrs) {
+        $timeout(function (){
+            search();
+            loadMore('api/getComplaints');
+            console.log('JS included')
+        }, 500, false);
+    };
+}]);
 
 /**
  * Controls all other Pages

@@ -61,22 +61,8 @@ function awsRecursiveFetch(connection, params, fetchOperation, finishCallback, e
     });
 }
 
-exports.getBounces = function (request, response) {
-    var params = helpers.prepareParams(request, config.connectionData.tableName, config.connectionData.indexName);
-    console.log('czy co????')
-    awsRecursiveFetch(dynamoDbClient, params,
-        function (connection, params, callback) {
-            singleQuery(connection, params, callback);
-        },
-        function (err, data) {
-            response.json(helpers.dataParser(data));
-        }
-    );
-};
-
-exports.getComplaints = function (request, response) {
-    var params = helpers.prepareParams(request, config.connectionData.tableName, config.connectionData.indexName, 'Complaint');
-console.log('tuuutaj')
+function getData(request, response, type) {
+    var params = helpers.prepareParams(request, config.connectionData.tableName, config.connectionData.indexName, type);
     awsRecursiveFetch(dynamoDbClient, params,
       function (connection, params, callback) {
           singleQuery(connection, params, callback);
@@ -85,4 +71,12 @@ console.log('tuuutaj')
           response.json(helpers.dataParser(data));
       }
     );
+}
+
+exports.getBounces = function (request, response) {
+    getData(request, response, 'Bounce');
+};
+
+exports.getComplaints = function (request, response) {
+    getData(request, response, 'Complaint');
 };
