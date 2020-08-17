@@ -10,6 +10,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.get('/api/getBounces', apiRoutes.getBounces);
+app.get('/api/getComplaints', apiRoutes.getComplaints);
 
 app.use(express.static(__dirname + '/'));
 // Here's the new code:

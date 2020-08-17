@@ -13,13 +13,13 @@ function urlDeserialize(unserializedString) {
     return parsedFilters;
 }
 
-exports.prepareParams = function (request, dynamoDbTableName, dynamoDbTableIndexName) {
+exports.prepareParams = function (request, dynamoDbTableName, dynamoDbTableIndexName, type) {
     let params = {
         TableName: dynamoDbTableName,
         IndexName: dynamoDbTableIndexName,
         KeyConditionExpression: "notificationType = :bounce",
         ExpressionAttributeValues: {
-            ':bounce': 'Bounce'
+            ':bounce': type || 'Bounce'
         }
     };
 
@@ -35,7 +35,7 @@ exports.prepareParams = function (request, dynamoDbTableName, dynamoDbTableIndex
             delete filters['date_from'];
             delete filters['date_to'];
         }
-        filters['bounce'] = "Bounce";
+        filters['bounce'] = type || "Bounce";
 
         let parsedFilters = parser.Parse(config.dynamoDefinitions, config.indices[dynamoDbTableIndexName]["keyFields"], filters);
 
