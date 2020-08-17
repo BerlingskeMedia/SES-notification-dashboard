@@ -1,0 +1,60 @@
+<div class="panel panel-default text-center">
+  <div class="panel-heading">
+    <strong>Filters</strong>
+  </div>
+  <form [formGroup]="form">
+    <div class="form-row align-items-center mb-3">
+      <div class="col-auto">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon2">Date from:</span>
+          </div>
+          <input type="date" name="date_from"
+                 formControlName="date_from"
+                 aria-describedby="basic-addon2"
+                 class="form-control search-filter"
+                 placeholder="Date from:">
+        </div>
+      </div>
+      <div class="col-auto">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon3">Date to:</span>
+          </div>
+          <input type="date" name="date_to"
+                 formControlName="date_to"
+                 aria-describedby="basic-addon3"
+                 class="form-control search-filter"
+                 placeholder="Date to">
+       </div>
+      </div>
+      <div class="col-auto">
+        <input type="email" name="user_mail"
+               formControlName="user_mail"
+               class="form-control search-filter"
+               placeholder="User Email">
+      </div>
+    </div>
+    <div class="form-row align-items-center">
+      <div class="col-auto">
+        <input type="email" name="sender_mail"
+               formControlName="sender_mail"
+               class="form-control search-filter"
+               placeholder="Sender Email">
+      </div>
+      <div class="col-auto">
+        <input type="email" name="email_subject"
+               formControlName="email_subject"
+               class="form-control search-filter"
+               placeholder="Email Subject">
+      </div>
+      <div class="col-auto">
+        <input type="email" name="sent_from"
+               formControlName="sent_from"
+               class="form-control search-filter"
+               placeholder="Sent from">
+      </div>
+      <button class="btn btn-dark" (click)="get()">Search</button>
+    </div>
+  </form>
+</div>

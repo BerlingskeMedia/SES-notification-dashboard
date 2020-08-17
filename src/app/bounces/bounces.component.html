@@ -1,0 +1,52 @@
+<div class="container">
+  <div class="panel panel-default" style="margin-top: 20px">
+    <strong>Bounces</strong> – The recipient's mail server permanently rejected the email. This event corresponds to hard bounces.
+    Soft bounces are only included when Amazon SES fails to deliver the email after retrying for a period of time.
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <app-dashboard-form [data]="data" (getData)="getData($event)"></app-dashboard-form>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="panel panel-default text-center">
+        <div class="panel-heading">
+          <strong>Results</strong>
+        </div>
+
+        <div class="panel-body">
+          <input type="button" id="load-more" class="btn btn-default" value="Load">
+          <table id="bounce-table">
+            <thead>
+            <tr>
+              <th>Notification Time</th>
+              <th>User e-mail</th>
+              <th>Sender e-mail</th>
+              <th>Sender location</th>
+              <th>Subject</th>
+            </tr>
+            </thead>
+            <tfoot>
+            <tr>
+              <th>Notification Time</th>
+              <th>User e-mail</th>
+              <th>Sender e-mail</th>
+              <th>Sender location</th>
+              <th>Subject</th>
+            </tr>
+            </tfoot>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+<!-- /.container -->
+
