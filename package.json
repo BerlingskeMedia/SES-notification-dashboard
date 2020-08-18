@@ -9,7 +9,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "dev": "nodemon",
-    "start": "node app/app.js"
+    "start": "npm run build && node app/app.js"
   },
   "private": true,
   "dependencies": {
@@ -21,15 +21,16 @@
     "@angular/platform-browser": "~10.0.9",
     "@angular/platform-browser-dynamic": "~10.0.9",
     "@angular/router": "~10.0.9",
-    "rxjs": "~6.5.5",
-    "tslib": "^2.0.0",
-    "zone.js": "~0.10.3",
     "aws-sdk": "~2.734.0",
     "body-parser": "~1.19.0",
+    "cors": "^2.8.5",
     "datatables.net-dt": "~1.10.21",
     "express": "~4.17.1",
     "http": "0.0.0",
-    "jquery": "~3.5.1"
+    "jquery": "~3.5.1",
+    "rxjs": "~6.5.5",
+    "tslib": "^2.0.0",
+    "zone.js": "~0.10.3"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.1000.6",

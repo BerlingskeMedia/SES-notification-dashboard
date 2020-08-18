@@ -4,12 +4,13 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     apiRoutes = require('./routes/api');
 var path = require('path');
+var cors = require('cors');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
-
+app.use(cors());
 app.get('/api/getBounces', apiRoutes.getBounces);
 app.get('/api/getComplaints', apiRoutes.getComplaints);
 

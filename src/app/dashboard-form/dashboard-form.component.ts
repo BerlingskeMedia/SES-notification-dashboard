@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {NotificationData} from "../models/notification";
 
 @Component({
   selector: 'app-dashboard-form',
@@ -7,9 +8,11 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
   styleUrls: ['./dashboard-form.component.scss']
 })
 export class DashboardFormComponent implements OnInit, OnChanges {
-  @Input() data: any[];
+  @Input() data: NotificationData;
   @Output() getData: EventEmitter<Date> = new EventEmitter<Date>();
   public form: FormGroup;
+  private lastEvalKey;
+  public headElements = ['notification_time', 'user_email' ,'sender_email', 'sender_location', 'subject', 'actions'];
 
   constructor(private formBuilder: FormBuilder) {
   }
@@ -24,12 +27,11 @@ export class DashboardFormComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('ngOnChanges')
-    console.log(changes)
+    this.lastEvalKey = changes.lastEvalKey;
   }
 
-  public get() {
-    this.getData.emit(this.form.controls.from.value)
+  public get(formData) {
+    this.getData.emit(formData)
   }
 
 

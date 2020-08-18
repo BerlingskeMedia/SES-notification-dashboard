@@ -3,22 +3,20 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { FooterComponent } from './footer/footer.component';
-import { ZabyComponent } from './zaby/zaby.component';
 import {HttpClientModule} from "@angular/common/http";
 import { BouncesComponent } from './bounces/bounces.component';
 import { HeaderComponent } from './header/header.component';
 import { DashboardFormComponent } from './dashboard-form/dashboard-form.component';
 import {ReactiveFormsModule} from "@angular/forms";
+import { ComplaintsComponent } from './complaints/complaints.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    FooterComponent,
-    ZabyComponent,
     BouncesComponent,
     HeaderComponent,
-    DashboardFormComponent
+    DashboardFormComponent,
+    ComplaintsComponent
   ],
   imports: [
     BrowserModule,
