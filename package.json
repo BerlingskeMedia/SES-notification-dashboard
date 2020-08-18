@@ -1,40 +1,56 @@
 {
-  "name": "SES-bounce-notification",
+  "name": "ses-notification-dashboard",
   "version": "0.0.0",
-  "description": "Application for handling dashboard of mail bounce notifications",
-  "main": "app/app.js",
+  "scripts": {
+    "ng": "ng",
+    "serve": "ng serve",
+    "build": "ng build",
+    "test": "ng test",
+    "lint": "ng lint",
+    "e2e": "ng e2e",
+    "dev": "nodemon",
+    "start": "npm run build && node app/app.js"
+  },
+  "private": true,
   "dependencies": {
+    "@angular/animations": "~10.0.9",
+    "@angular/common": "~10.0.9",
+    "@angular/compiler": "~10.0.9",
+    "@angular/core": "~10.0.9",
+    "@angular/forms": "~10.0.9",
+    "@angular/platform-browser": "~10.0.9",
+    "@angular/platform-browser-dynamic": "~10.0.9",
+    "@angular/router": "~10.0.9",
     "aws-sdk": "~2.734.0",
     "body-parser": "~1.19.0",
+    "cors": "^2.8.5",
     "datatables.net-dt": "~1.10.21",
     "express": "~4.17.1",
     "http": "0.0.0",
-    "jquery": "~3.5.1"
+    "jquery": "~3.5.1",
+    "rxjs": "~6.5.5",
+    "tslib": "^2.0.0",
+    "zone.js": "~0.10.3"
   },
   "devDependencies": {
+    "@angular-devkit/build-angular": "~0.1000.6",
+    "@angular/cli": "~10.0.6",
+    "@angular/compiler-cli": "~10.0.9",
+    "@types/node": "^12.11.1",
+    "@types/jasmine": "~3.5.0",
+    "@types/jasminewd2": "~2.0.3",
+    "codelyzer": "^6.0.0",
+    "jasmine-core": "~3.5.0",
+    "jasmine-spec-reporter": "~5.0.0",
+    "karma": "~5.0.0",
+    "karma-chrome-launcher": "~3.1.0",
+    "karma-coverage-istanbul-reporter": "~3.0.2",
+    "karma-jasmine": "~3.3.0",
+    "karma-jasmine-html-reporter": "^1.5.0",
+    "protractor": "~7.0.0",
+    "ts-node": "~8.3.0",
+    "tslint": "~6.1.0",
+    "typescript": "~3.9.5",
     "nodemon": "^2.0.4"
-  },
-  "scripts": {
-    "dev": "nodemon",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app/app.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/BerlingskeMedia/SES-notification-dashboard.git"
-  },
-  "keywords": [
-    "Daniel",
-    "dashboard",
-    "SES",
-    "bounce",
-    "mails",
-    "notification",
-    "customer-service"
-  ],
-  "author": "Daniel Jozie Kokott, Przemysław 'Semy' Zasoński, Marek Kalinowski",
-  "license": "BSD-2-Clause",
-  "bugs": {
-    "url": "https://github.com/BerlingskeMedia/SES-notification-dashboard/issues"
   }
 }

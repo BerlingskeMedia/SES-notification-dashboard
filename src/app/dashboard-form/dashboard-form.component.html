@@ -1,0 +1,88 @@
+<div class="panel panel-default text-center mb-3 mt-3">
+  <div class="panel-heading">
+    <strong>Filters</strong>
+  </div>
+  <form [formGroup]="form" (ngSubmit)="get(form.value)">
+    <div class="form-row align-items-center mb-3">
+      <div class="col-auto">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon2">Date from:</span>
+          </div>
+          <input type="date" name="date_from"
+                 formControlName="date_from"
+                 aria-describedby="basic-addon2"
+                 class="form-control search-filter"
+                 placeholder="Date from:">
+        </div>
+      </div>
+      <div class="col-auto">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon3">Date to:</span>
+          </div>
+          <input type="date" name="date_to"
+                 formControlName="date_to"
+                 aria-describedby="basic-addon3"
+                 class="form-control search-filter"
+                 placeholder="Date to">
+       </div>
+      </div>
+      <div class="col-auto">
+        <input type="email" name="user_mail"
+               formControlName="user_mail"
+               class="form-control search-filter"
+               placeholder="User Email">
+      </div>
+    </div>
+    <div class="form-row align-items-center">
+      <div class="col-auto">
+        <input type="email" name="sender_mail"
+               formControlName="sender_mail"
+               class="form-control search-filter"
+               placeholder="Sender Email">
+      </div>
+      <div class="col-auto">
+        <input type="email" name="email_subject"
+               formControlName="email_subject"
+               class="form-control search-filter"
+               placeholder="Email Subject">
+      </div>
+      <div class="col-auto">
+        <input type="email" name="sent_from"
+               formControlName="sent_from"
+               class="form-control search-filter"
+               placeholder="Sent from">
+      </div>
+      <button class="btn btn-dark" type="submit">Search</button>
+    </div>
+  </form>
+</div>
+
+<div class="panel panel-default text-center">
+  <table class="table table-dark table-striped table-hover" id="bounce-table">
+    <thead>
+    <tr><th colspan="6" style="text-align: center;"><strong>Results</strong></th></tr>
+    <tr>
+      <th *ngFor="let head of headElements; let i = index" aria-controls="tableSortExample" scope="col" [mdbTableSort]="elements" [sortBy]="headElements[i]">{{head | titlecase}}
+        <mdb-icon fas icon="sort"></mdb-icon>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of data.data">
+        <td *ngFor="let key of item "> {{key | json}} </td>
+        <td>
+          <button type="button" class="btn btn-warning">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+    <tr>
+      <th *ngFor="let head of headElements;"scope="col">{{head | titlecase}}
+      </th>
+    </tr>
+    </tfoot>
+  </table>
+  <button type="button" id="load-more" class="btn btn-info">Load More</button>
+</div>

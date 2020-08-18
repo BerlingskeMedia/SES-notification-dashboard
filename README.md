@@ -1,7 +1,9 @@
 SES Notifications Dashboard
 ====================
+#### MonoRepo for Angular 10 + NodeJS
 
-config.sh
+
+.env
 ```
 #!/bin/bash
 
@@ -10,11 +12,18 @@ export SECRET_ACCESS_KEY={SECRET}
 export AWS_REGION=eu-west-1
 ```
 
-Running the app
+#### Running the app
+###### local
 ```
-npm install //required only once after cloning
-. config.sh //required once every session
-node app/app.js
+npm i
+. .env
+ng serve // in first terminal
+npm start // in second terminal
 ```
-
-App should default to localhost:3000
+app runs on localhost:4200 in local
+###### prod-alike (normally this uses dockerfile)
+```
+npm ci
+. .env
+npm start
+```
