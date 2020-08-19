@@ -35,6 +35,25 @@ function awsRecursiveFetch(connection, params, fetchOperation, finishCallback, e
         console.log("Current items: ", data["Items"].length);
         console.log("All items: ", aggregatedData["Items"].length);
 
+        aggregatedData['stats'] = {}
+        aggregatedData['stats']['sender_location'] = {}
+        aggregatedData['stats']['subject'] = {}
+        data["Items"].map((item) => {
+          const subject = item['mail']['commonHeaders']['subject'];
+          let senderLocation = item['mail']['commonHeaders']['messageId'];
+          senderLocation = senderLocation.substring(senderLocation.lastIndexOf("@") + 1, senderLocation.lastIndexOf(">"));
+          if (aggregatedData['stats']['subject'][subject]) {
+            aggregatedData['stats']['subject'][subject] +=1;
+          } else {
+            aggregatedData['stats']['subject'][subject] =1;
+          }
+          if (aggregatedData['stats']['sender_location'][senderLocation]) {
+            aggregatedData['stats']['sender_location'][senderLocation] += 1;
+          } else {
+            aggregatedData['stats']['sender_location'][senderLocation] = 1;
+          }
+        });
+
         if (aggregatedData["Count"] < expectedHits) {
             if (!aggregatedData["LastEvaluatedKey"]) {
                 finishCallback(0, aggregatedData);
@@ -55,7 +74,6 @@ function awsRecursiveFetch(connection, params, fetchOperation, finishCallback, e
                     aggregatedData['LastEvaluatedKey'][indexConfig[i]] = lastItem[indexConfig[i]];
                 }
             }
-
             finishCallback(0, aggregatedData);
         }
     });

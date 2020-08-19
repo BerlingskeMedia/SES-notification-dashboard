@@ -9,6 +9,7 @@ import { HeaderComponent } from './header/header.component';
 import { DashboardFormComponent } from './dashboard-form/dashboard-form.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import { ComplaintsComponent } from './complaints/complaints.component';
+import { LoginComponent } from './google/login/login.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { ComplaintsComponent } from './complaints/complaints.component';
     BouncesComponent,
     HeaderComponent,
     DashboardFormComponent,
-    ComplaintsComponent
+    ComplaintsComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
