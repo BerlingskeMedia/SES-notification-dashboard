@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Router, UrlSerializer} from "@angular/router";
 import Notification from "../models/notification";
+import {environment} from "../../environments/environment";
 
 @Component({
   selector: 'app-complaints',
@@ -25,7 +26,7 @@ export class ComplaintsComponent implements OnInit {
   }
 
   private async fetch(query: string): Promise<Notification[]>{
-    return this.httpClient.get<Notification[]>(`http://localhost:3000/api${query}`)
+    return this.httpClient.get<Notification[]>(`${environment.appUrl}/api${query}`)
       .toPromise();
   }
 

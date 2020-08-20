@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import Notification from "../models/notification";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Router, UrlSerializer} from "@angular/router";
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-bounces',
@@ -31,7 +32,7 @@ export class BouncesComponent implements OnInit {
   private async fetch(query: string): Promise<Notification[]>{
     const id_token = JSON.parse(sessionStorage.getItem('id_token'));
     console.log({id_token})
-    return this.httpClient.get<Notification[]>(`http://localhost:3000/api${query}`,
+    return this.httpClient.get<Notification[]>(`${environment.appUrl}/api${query}`,
       { headers: {'Authorization': id_token}}
     ).toPromise();
   }

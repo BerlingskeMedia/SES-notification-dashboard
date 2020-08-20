@@ -12,9 +12,9 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(function(req, res, next) {
+  const date = new Date();
   console.log(
-    req.originalUrl,
-    req.headers,
+    `${date.toISOString()} ${req.originalUrl} ${res.statusCode}`
   );
   next();
 });
