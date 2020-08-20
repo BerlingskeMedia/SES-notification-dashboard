@@ -73,7 +73,7 @@
       <tr *ngFor="let item of data.data">
         <td *ngFor="let key of item "> {{key | json}} </td>
         <td>
-          <button type="button" class="btn btn-warning">Delete</button>
+          <button type="button" class="btn btn-warning" disabled>Delete</button>
         </td>
       </tr>
     </tbody>
@@ -84,5 +84,5 @@
     </tr>
     </tfoot>
   </table>
-  <button type="button" id="load-more" class="btn btn-info">Load More</button>
+  <button type="button" id="load-more" class="btn btn-info" disabled>Load More</button>
 </div>

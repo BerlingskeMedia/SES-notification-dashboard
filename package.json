@@ -9,7 +9,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "dev": "nodemon",
-    "start": "npm run build && node app/app.js"
+    "start": "node app/app.js",
+    "start-prod": "ng build --prod && node app/app.js"
   },
   "private": true,
   "dependencies": {
@@ -21,11 +22,14 @@
     "@angular/platform-browser": "~10.0.9",
     "@angular/platform-browser-dynamic": "~10.0.9",
     "@angular/router": "~10.0.9",
+    "@types/gapi": "0.0.39",
+    "@types/gapi.auth2": "0.0.52",
     "aws-sdk": "~2.734.0",
     "body-parser": "~1.19.0",
     "cors": "^2.8.5",
     "datatables.net-dt": "~1.10.21",
     "express": "~4.17.1",
+    "google-auth-library": "^6.0.6",
     "http": "0.0.0",
     "jquery": "~3.5.1",
     "rxjs": "~6.5.5",

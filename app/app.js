@@ -2,7 +2,8 @@ var express = require('express'),
     app = express(),
     server = require('http').Server(app),
     bodyParser = require('body-parser'),
-    apiRoutes = require('./routes/api');
+    apiRoutes = require('./routes/api'),
+    google = require('./libs/google');
 var path = require('path');
 var cors = require('cors');
 
@@ -10,9 +11,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+app.use(function(req, res, next) {
+  const date = new Date();
+  console.log(
+    `${date.toISOString()} ${req.originalUrl} ${res.statusCode}`
+  );
+  next();
+});
 app.use(cors());
-app.get('/api/getBounces', apiRoutes.getBounces);
-app.get('/api/getComplaints', apiRoutes.getComplaints);
+app.post('/api/tokensignin', google.verifySignIn);
+app.get('/api/getBounces', google.auth, apiRoutes.getBounces);
+app.get('/api/getComplaints', google.auth, apiRoutes.getComplaints);
 
 app.use(express.static(path.join(__dirname, '../dist/')));
 // Here's the new code:
