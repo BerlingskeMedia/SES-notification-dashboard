@@ -1,11 +1,8 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+<nav class="navbar navbar-expand-md navbar-dark bg-dark d-flex">
   <a class="navbar-brand" href="#">Notification Dashboard</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
 
-  <div class="collapse navbar-collapse" id="navbarNavDropdown">
-    <ul class="navbar-nav mr-auto">
+  <div class="collapse navbar-collapse order-2" id="navbarNavDropdown" [ngClass]="{show: navbarOpen}">
+    <ul class="navbar-nav mr-auto menu-wrapper">
       <a class="nav-link" href="/bounces">Bounce List</a>
       <a class="nav-link" href="/complaints">Complaint List</a>
       <li class="nav-item">
@@ -13,4 +10,14 @@
       </li>
     </ul>
   </div>
+  <button
+    (click)="navbarOpen = !navbarOpen"
+    class="navbar-toggler order-1"
+    type="button"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+    aria-controls="navbarNavDropdown"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
 </nav>

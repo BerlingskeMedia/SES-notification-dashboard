@@ -1,0 +1,15 @@
+:host {
+  flex: 1;
+}
+
+nav {
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
+}
+
+.menu-wrapper {
+  justify-content: flex-end;
+  align-items: flex-end;
+  flex: 1;
+}
