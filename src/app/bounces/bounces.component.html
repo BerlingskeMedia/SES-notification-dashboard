@@ -10,5 +10,23 @@
     </div>
   </div>
 
+  <div class="panel panel-default text-center mt-2">
+      <table  class="table table-striped table-hover" >
+        <thead><td colspan="2" class="warning">Search stats</td></thead>
+        <thead><td colspan="2" class="info">By sender location</td></thead>
+        <tbody *ngIf="data.stats">
+        <tr *ngFor="let item of data.stats.sender_location | keyvalue">
+          <td> {{item.key | json}} </td><td>{{item.value | json}} </td>
+        </tr>
+        </tbody>
+        <thead><td colspan="2" class="info">By subject</td></thead>
+        <tbody *ngIf="data.stats">
+        <tr *ngFor="let item of data.stats.subject | keyvalue">
+          <td>{{item.key | json}} </td><td>{{item.value | json}} </td>
+        </tr>
+        </tbody>
+      </table>
+  </div>
+
 </div>
 

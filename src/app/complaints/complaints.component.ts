@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Router, UrlSerializer} from "@angular/router";
-import Notification from "../models/notification";
+import {NotificationData} from "../models/notification";
 import {environment} from "../../environments/environment";
 
 @Component({
@@ -11,7 +11,7 @@ import {environment} from "../../environments/environment";
 })
 export class ComplaintsComponent implements OnInit {
 
-  public data: any[] = []
+  public data: NotificationData = {};
   constructor(private httpClient: HttpClient, private router: Router, private serializer: UrlSerializer) { }
 
   ngOnInit(): void {
@@ -25,9 +25,11 @@ export class ComplaintsComponent implements OnInit {
     });
   }
 
-  private async fetch(query: string): Promise<Notification[]>{
-    return this.httpClient.get<Notification[]>(`${environment.appUrl}/api${query}`)
-      .toPromise();
+  private async fetch(query: string): Promise<NotificationData> {
+    const id_token = JSON.parse(sessionStorage.getItem('id_token'));
+    return this.httpClient.get<NotificationData>(`${environment.appUrl}/api${query}`,
+      { headers: {'Authorization': id_token}}
+      ).toPromise();
   }
 
 }

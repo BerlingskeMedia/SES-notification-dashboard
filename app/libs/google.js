@@ -19,6 +19,7 @@ async function verifyIdToken(idToken) {
     }
   } catch (err) {
     console.error(err)
+    throw new Error('Unauthorized')
   }
 }
 
@@ -30,7 +31,7 @@ exports.verifySignIn = async function (request, response) {
     response.send('Wygrales w zycie');
   } catch (err) {
     console.error(err)
-    response.send(401, err.message)
+    response.status(401).send(err.message)
   }
 }
 
@@ -42,6 +43,6 @@ exports.auth = async function (request, response, next) {
     next();
   } catch (err) {
     console.error(err)
-    response.send(401, err.message)
+    response.status(401).send(err.message)
   }
 }

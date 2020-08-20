@@ -7,12 +7,18 @@ export default interface Notification {
 }
 
 export interface NotificationData {
-  data: any[],
-  lastEvalKey: LastEvalKey
+  data?: Notification[],
+  lastEvalKey?: LastEvalKey,
+  stats?: NotificationDataStats
 }
 
 export interface LastEvalKey {
   notificationId: string;
   notificationTime: string;
   notificationType: string;
+}
+
+export interface NotificationDataStats {
+  sender_location: object;
+  subject: object;
 }
