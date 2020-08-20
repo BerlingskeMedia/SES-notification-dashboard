@@ -1,0 +1,3 @@
+<div class="toast-wrapper">
+  <ngb-alert *ngIf="toast" [type]="toast.type" (close)="closeToast()"> {{ toast.content }} </ngb-alert>
+</div>

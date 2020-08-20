@@ -1,0 +1,14 @@
+:host {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  justify-content: center;
+}
+
+.toast-wrapper {
+  position: fixed;
+  z-index: 9999;
+  justify-content: center;
+}

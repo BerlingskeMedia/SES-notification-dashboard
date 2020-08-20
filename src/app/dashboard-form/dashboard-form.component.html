@@ -64,7 +64,7 @@
     <thead>
     <tr><th colspan="6" style="text-align: center;"><strong>Results</strong></th></tr>
     <tr>
-      <th *ngFor="let head of headElements; let i = index" aria-controls="tableSortExample" scope="col" [mdbTableSort]="elements" [sortBy]="headElements[i]">{{head | titlecase}}
+      <th *ngFor="let head of headElements; let i = index" aria-controls="tableSortExample" scope="col" >{{head | titlecase}}
         <mdb-icon fas icon="sort"></mdb-icon>
       </th>
     </tr>
@@ -77,12 +77,6 @@
         </td>
       </tr>
     </tbody>
-    <tfoot>
-    <tr>
-      <th *ngFor="let head of headElements;"scope="col">{{head | titlecase}}
-      </th>
-    </tr>
-    </tfoot>
   </table>
   <button type="button" id="load-more" class="btn btn-info" disabled>Load More</button>
 </div>

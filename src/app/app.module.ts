@@ -10,6 +10,8 @@ import { DashboardFormComponent } from './dashboard-form/dashboard-form.componen
 import {ReactiveFormsModule} from "@angular/forms";
 import { ComplaintsComponent } from './complaints/complaints.component';
 import { LoginComponent } from './google/login/login.component';
+import { ToastComponent } from './components/toast/toast.component';
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 
 @NgModule({
   declarations: [
@@ -18,13 +20,15 @@ import { LoginComponent } from './google/login/login.component';
     HeaderComponent,
     DashboardFormComponent,
     ComplaintsComponent,
-    LoginComponent
+    LoginComponent,
+    ToastComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]
