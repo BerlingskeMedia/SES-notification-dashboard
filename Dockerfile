@@ -14,4 +14,4 @@ RUN echo Build date `date +%Y-%m-%d` > /SES-bounce-notification/version
 EXPOSE 3000
 
 # When starting a container with our image, this command will be run.
-CMD ["npm", "start-prod"]
+CMD ["npm", " run start-prod"]
