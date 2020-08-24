@@ -9,8 +9,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "dev": "nodemon",
-    "start": "node app/app.js",
-    "start-prod": "ng build --prod && node app/app.js"
+    "start": "node app/app.js"
   },
   "private": true,
   "dependencies": {
