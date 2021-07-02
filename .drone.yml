@@ -12,29 +12,29 @@ steps:
     image: node:14.11-alpine
     commands:
       - npm run lint
-  - name: test
-    image: node:14.11-alpine
-    commands:
-      - npm test
-  - name: e2e
-    image: node:14.11-alpine
-    commands:
-      - npm run e2e
-#  - name: build & publish docker image to ECR
-#    image: plugins/ecr
-#    settings:
-#      mirror: https://proxy.docker.all.berlingskemedia.net
-#      access_key:
-#        from_secret: aws_access_key_testing
-#      secret_key:
-#        from_secret: aws_access_key_secret_testing
-#      region: eu-west-1
-#      repo: userhandling-testing-userhandling-ecr/paymentmanager
-#      registry: 815296035528.dkr.ecr.eu-west-1.amazonaws.com
-#      dockerfile: Dockerfile
-#      tags:
-#        - ${DRONE_BUILD_NUMBER}-${CI_COMMIT_SHA}
-#        - ${CI_COMMIT_SHA}
+#  - name: test
+#    image: node:14.11-alpine
+#    commands:
+#      - npm test
+#  - name: e2e
+#    image: node:14.11-alpine
+#    commands:
+#      - npm run e2e
+  - name: build & publish docker image to ECR
+    image: plugins/ecr
+    settings:
+      mirror: https://proxy.docker.all.berlingskemedia.net
+      access_key:
+        from_secret: aws_access_key_testing
+      secret_key:
+        from_secret: aws_access_key_secret_testing
+      region: eu-west-1
+      repo: cust-testing-newsletter-ecr/notification-dashboard
+      registry: 815296035528.dkr.ecr.eu-west-1.amazonaws.com
+      dockerfile: Dockerfile
+      tags:
+        - ${DRONE_BUILD_NUMBER}-${CI_COMMIT_SHA}
+        - ${CI_COMMIT_SHA}
 
 trigger:
   event:
@@ -126,3 +126,17 @@ trigger:
 #    - promote
 #  target:
 #    - production
+
+
+---
+kind: secret
+name: aws_access_key_testing
+get:
+  path: drone/cust-testing-newsletter
+  name: aws_access_key
+---
+kind: secret
+name: aws_access_key_secret_testing
+get:
+  path: drone/cust-testing-newsletter
+  name: aws_access_key_secret
