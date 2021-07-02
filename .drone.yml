@@ -16,10 +16,10 @@ steps:
     image: node:14.11-alpine
     commands:
       - npm test
-#  - name: e2e
-#    image: node:14.11-alpine
-#    commands:
-#      - npm run e2e
+  - name: e2e
+    image: node:14.11-alpine
+    commands:
+      - npm run e2e
 #  - name: build & publish docker image to ECR
 #    image: plugins/ecr
 #    settings:
