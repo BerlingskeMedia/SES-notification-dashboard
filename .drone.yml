@@ -8,7 +8,7 @@ steps:
     image: node:14.11-alpine
     commands:
       - npm ci
-  - name: test
+  - name: lint
     image: node:14.11-alpine
     commands:
       - npm run lint
