@@ -13,8 +13,6 @@ services:
     image: ses-dasboard
     ports:
       - "3000:3000"
-    depends_on:
-      - frontend
     env_file:
       - .env
     command: npm start

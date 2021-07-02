@@ -18,9 +18,9 @@ export AWS_REGION=eu-west-1
 cp .env.dist .env
 docker-compose up
 ```
-app runs on localhost:3000 in local
 
-app runs on localhost:4200 in local
+app runs on http://localhost:4200 and backend at http://localhost:3000
+
 ###### prod-alike (normally this uses dockerfile)
 ```
 npm ci
