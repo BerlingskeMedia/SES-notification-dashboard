@@ -13,13 +13,13 @@ export AWS_REGION=eu-west-1
 ```
 
 #### Running the app
-###### local
+###### locally with docker
 ```
-npm i
-. .env
-ng serve // in first terminal
-npm start // in second terminal
+cp .env.dist .env
+docker-compose up
 ```
+app runs on localhost:3000 in local
+
 app runs on localhost:4200 in local
 ###### prod-alike (normally this uses dockerfile)
 ```
