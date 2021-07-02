@@ -6,7 +6,7 @@
     "serve": "ng serve --host 0.0.0.0",
     "build": "ng build",
     "test": "ng test",
-    "lint": "ng lint",
+    "lint": "ng lint --fix",
     "e2e": "ng e2e",
     "dev": "nodemon",
     "start": "node app/app.js"

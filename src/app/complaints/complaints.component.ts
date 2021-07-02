@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {Router, UrlSerializer} from "@angular/router";
-import {NotificationData} from "../models/notification";
-import {environment} from "../../environments/environment";
+import {HttpClient} from '@angular/common/http';
+import {Router, UrlSerializer} from '@angular/router';
+import {NotificationData} from '../models/notification';
+import {environment} from '../../environments/environment';
 
 @Component({
   selector: 'app-complaints',
@@ -17,8 +17,8 @@ export class ComplaintsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  getData(formData) {
-    const tree = this.router.createUrlTree(['/getComplaints'], { queryParamsHandling: "merge",queryParams: formData });
+  getData(formData): void {
+    const tree = this.router.createUrlTree(['/getComplaints'], { queryParamsHandling: 'merge', queryParams: formData });
     const query = this.serializer.serialize(tree);
     this.fetch(query).then((notifications) => {
       this.data = notifications;
@@ -26,9 +26,9 @@ export class ComplaintsComponent implements OnInit {
   }
 
   private async fetch(query: string): Promise<NotificationData> {
-    const id_token = JSON.parse(sessionStorage.getItem('id_token'));
+    const idToken = JSON.parse(sessionStorage.getItem('id_token'));
     return this.httpClient.get<NotificationData>(`${environment.appUrl}/api${query}`,
-      { headers: {'Authorization': id_token}}
+      { headers: {Authorization: idToken}}
       ).toPromise();
   }
 
