@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  appUrl: 'http://localhost:3000'
+  appUrl: 'https://notification-dashboard.newsletter.cust.aws.berlingskemedia-testing.net'
 };
 
 /*
