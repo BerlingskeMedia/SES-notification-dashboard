@@ -59,9 +59,9 @@ steps:
       GIGYA_SECRET:
         from_secret: gigya_secret_testing
       ACCESS_KEY_ID:
-        from_secret: dynamo_db_aws_access_key_testing
+        from_secret: dynamo_db_access_key_testing
       SECRET_ACCESS_KEY:
-        from_secret: dynamo_db_aws_access_key_secret_testing
+        from_secret: dynamo_db_access_key_secret_testing
     settings:
       access_key:
         from_secret: aws_access_key_testing
