@@ -111,61 +111,78 @@ trigger:
     - master
     - BMD-7097
 
-#---
-#kind: pipeline
-#type: docker
-#name: deploy pipeline
-#clone:
-#  disable: true
-#
-#steps:
-#  - name: deploy to production
-#    image: pelotech/drone-ecs:1.0.7
-#    settings:
-#      access_key:
-#        from_secret: aws_access_key_testing
-#      secret_key:
-#        from_secret: aws_access_key_secret_testing
-#      cluster: userhandling-testing-userhandling
-#      compatibilities: FARGATE
-#      deployment_configuration: 100 200
-#      desired_count: 1
-#      docker_image: 815296035528.dkr.ecr.eu-west-1.amazonaws.com/userhandling-testing-userhandling-ecr/paymentmanager
-#      container_name: userhandling-testing-userhandling-paymentmanager-qa1-container
-#      family: userhandling-paymentmanager-qa1
-#      log_driver: awslogs
-#      log_options:
-#        - awslogs-group=userhandling-testing-userhandling
-#        - awslogs-region=eu-west-1
-#        - awslogs-stream-prefix=userhandling-paymentmanager-qa1
-#      memory: 512
-#      port_mappings:
-#        - 9000 9000
-#      region: eu-west-1
-#      service: userhandling-testing-userhandling-paymentmanager-qa1
-#      service_network_security_groups:
-#        - sg-0f88cbea3ccd6ca36
-#        - sg-037e27cbada07c817
-#      service_network_subnets:
-#        - subnet-0ace4f6a68677187c
-#        - subnet-01633ca14c693e302
-#        - subnet-061a8876f7f68ea21
-#      tag: ${DRONE_BUILD_PARENT}-${CI_COMMIT_SHA}
-#      task_cpu: 256
-#      task_execution_role_arn: arn:aws:iam::815296035528:role/userhandling-testing-userhandling-paymentmanager-qa1-exec
-#      task_memory: 512
-#      task_network_mode: awsvpc
-#    when:
-#      event:
-#        - promote
-#      target:
-#        - production
-#trigger:
-#  event:
-#    - promote
-#  target:
-#    - production
+---
+kind: pipeline
+type: docker
+name: deploy pipeline
+clone:
+  disable: true
 
+steps:
+  - name: deploy to production
+    image: pelotech/drone-ecs:1.0.7
+    environment:
+      GOOGLE_OAUTH_CLIENT_ID:
+        from_secret: google_oauth_client_id_production
+      GOOGLE_OAUTH_CLIENT_SECRET:
+        from_secret: google_oauth_client_secret_production
+      GIGYA_APP_KEY:
+        from_secret: gigya_app_key_production
+      GIGYA_USER_KEY:
+        from_secret: gigya_user_key_production
+      GIGYA_SECRET:
+        from_secret: gigya_secret_production
+      ACCESS_KEY_ID:
+        from_secret: dynamo_db_access_key_production
+      SECRET_ACCESS_KEY:
+        from_secret: dynamo_db_access_key_secret_production
+    settings:
+    access_key:
+      from_secret: aws_access_key_production
+    secret_key:
+      from_secret: aws_access_key_secret_production
+    cluster: cust-production-newsletter
+    compatibilities: FARGATE
+    deployment_configuration: 100 200
+    desired_count: 1
+    docker_image: 815296035528.dkr.ecr.eu-west-1.amazonaws.com/cust-production-newsletter-ecr/notification-dashboard
+    container_name: cust-production-newsletter-notification-dashboard-container
+    family: cust-production-newsletter-notification-dashboard
+    log_driver: awslogs
+    log_options:
+      - awslogs-group=cust-production-newsletter
+      - awslogs-region=eu-west-1
+      - awslogs-stream-prefix=newsletter-notification-dashboard
+    memory: 512
+    port_mappings:
+      - 3000 3000
+    region: eu-west-1
+    secret_environment_variables:
+      - GOOGLE_OAUTH_CLIENT_ID
+      - GOOGLE_OAUTH_CLIENT_SECRET
+      - GIGYA_APP_KEY
+      - GIGYA_USER_KEY
+      - GIGYA_SECRET
+      - ACCESS_KEY_ID
+      - SECRET_ACCESS_KEY
+    service: cust-production-newsletter-notification-dashboard
+    service_network_security_groups:
+      - sg-04532122919e3abd0
+      - sg-0a7eb053aa45ba0c1
+    service_network_subnets:
+      - subnet-061a8876f7f68ea21
+      - subnet-0ace4f6a68677187c
+      - subnet-01633ca14c693e302
+    tag: ${DRONE_BUILD_PARENT}-${CI_COMMIT_SHA}
+    task_cpu: 256
+    task_execution_role_arn: arn:aws:iam::815296035528:role/cust-production-newsletter-notification-dashboard-exec
+    task_memory: 512
+    task_network_mode: awsvpc
+    when:
+      event:
+        - promote
+      target:
+        - production
 
 ---
 kind: secret
@@ -178,4 +195,17 @@ kind: secret
 name: aws_access_key_secret_testing
 get:
   path: drone/cust-testing-newsletter
+  name: aws_access_key_secret
+
+---
+kind: secret
+name: aws_access_key_production
+get:
+  path: drone/cust-production-newsletter
+  name: aws_access_key
+---
+kind: secret
+name: aws_access_key_secret_production
+get:
+  path: drone/cust-production-newsletter
   name: aws_access_key_secret
