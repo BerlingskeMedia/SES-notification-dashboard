@@ -15,7 +15,7 @@ steps:
   - name: test
     image: zenika/alpine-chrome:89-with-node-14
     commands:
-      - npm test
+      - npm test:ci
 #  - name: e2e
 #    image: node:14.11-alpine
 #    commands:
