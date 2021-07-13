@@ -12,10 +12,10 @@ steps:
     image: node:14.11-alpine
     commands:
       - npm run lint
-#  - name: test
-#    image: node:14.11-alpine
-#    commands:
-#      - npm test
+  - name: test
+    image: node:14.11-alpine
+    commands:
+      - npm test
 #  - name: e2e
 #    image: node:14.11-alpine
 #    commands:
