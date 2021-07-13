@@ -7,9 +7,9 @@ export default interface Notification {
 }
 
 export interface NotificationData {
-  data?: Notification[],
-  lastEvalKey?: LastEvalKey,
-  stats?: NotificationDataStats
+  data?: Notification[];
+  lastEvalKey?: LastEvalKey;
+  stats?: NotificationDataStats;
 }
 
 export interface LastEvalKey {

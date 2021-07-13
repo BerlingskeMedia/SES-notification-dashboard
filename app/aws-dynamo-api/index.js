@@ -40,7 +40,7 @@ function awsRecursiveFetch(connection, params, fetchOperation, finishCallback, e
         aggregatedData['stats']['subject'] = {}
         data["Items"].map((item) => {
           const subject = item['mail']['commonHeaders']['subject'];
-          let senderLocation = item['mail']['commonHeaders']['messageId'];
+          let senderLocation = item['mail']['commonHeaders']['messageId'] || '';
           senderLocation = senderLocation.substring(senderLocation.lastIndexOf("@") + 1, senderLocation.lastIndexOf(">"));
           if (aggregatedData['stats']['subject'][subject]) {
             aggregatedData['stats']['subject'][subject] +=1;

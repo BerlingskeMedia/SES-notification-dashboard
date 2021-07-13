@@ -9,7 +9,7 @@ WORKDIR /SES-bounce-notification
 COPY . /SES-bounce-notification
 RUN npm ci
 RUN echo Build date `date +%Y-%m-%d` > /SES-bounce-notification/version
-RUN npm run build
+RUN npm run build:prod
 
 # Exposing our endpoint to Docker.
 EXPOSE 3000

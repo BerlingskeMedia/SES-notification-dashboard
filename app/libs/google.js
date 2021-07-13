@@ -15,7 +15,7 @@ async function verifyIdToken(idToken) {
     // If request specified a G Suite domain:
     const domain = payload['hd'];
     if (domain !== 'persgroep.net') {
-      throw new Error('Unauthorized')
+      throw new Error(`Unauthorized domain ${domain}`)
     }
   } catch (err) {
     console.error(err)

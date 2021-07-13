@@ -86,7 +86,7 @@ exports.dataParser = function (data) {
             senderEMail = senderEMail.replace("<", "[");
             senderEMail = senderEMail.replace(">", "]");
         }
-        let senderLocation = data['Items'][i]['mail']['commonHeaders']['messageId'];
+        let senderLocation = data['Items'][i]['mail']['commonHeaders']['messageId'] || '';
         senderLocation = senderLocation.substring(senderLocation.lastIndexOf("@") + 1, senderLocation.lastIndexOf(">"));
         let subject = data['Items'][i]['mail']['commonHeaders']['subject'];
         const notificationReason = data['Items'][i]['notificationReason'];

@@ -19,6 +19,7 @@ app.use(function(req, res, next) {
   next();
 });
 app.use(cors());
+app.get('/health', (req, res)  => res.send('OK'));
 app.post('/api/tokensignin', google.verifySignIn);
 app.get('/api/getBounces', google.auth, apiRoutes.getBounces);
 app.get('/api/getComplaints', google.auth, apiRoutes.getComplaints);
