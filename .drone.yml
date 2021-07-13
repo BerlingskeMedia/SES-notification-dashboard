@@ -4,7 +4,7 @@ type: docker
 name: PR checks
 
 steps:
-  - name: build
+  - name: install
     image: node:14.11-alpine
     commands:
       - npm ci
@@ -12,10 +12,13 @@ steps:
     image: node:14.11-alpine
     commands:
       - npm run lint
+  - name: build
+    image: node:14.11-alpine
+    commands:
+      - npm run build
   - name: test
     image: zenika/alpine-chrome:89-with-node-14
     commands:
-      - npm run build
       - npm run test:ci
 #  - name: e2e
 #    image: node:14.11-alpine
