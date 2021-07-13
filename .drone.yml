@@ -13,8 +13,7 @@ steps:
     commands:
       - npm run lint
   - name: test
-    image: artificerpi/nodejs-chrome
-    privileged: true
+    image: node:14.11-alpine
     commands:
       - npm test
 #  - name: e2e
