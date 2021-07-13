@@ -183,6 +183,9 @@ steps:
         - promote
       target:
         - production
+trigger:
+  event:
+    - promote
 
 ---
 kind: secret
