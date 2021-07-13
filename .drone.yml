@@ -171,8 +171,8 @@ steps:
       - SECRET_ACCESS_KEY
     service: cust-production-newsletter-notification-dashboard
     service_network_security_groups:
-      - sg-04532122919e3abd0
-      - sg-0a7eb053aa45ba0c1
+      - sg-0c2900399db25f1d7
+      - sg-0ed7a6014d73a7bcc
     service_network_subnets:
       - subnet-061a8876f7f68ea21
       - subnet-0ace4f6a68677187c
