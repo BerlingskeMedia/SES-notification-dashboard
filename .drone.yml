@@ -20,10 +20,10 @@ steps:
     image: zenika/alpine-chrome:89-with-node-14
     commands:
       - npm run test:ci
-#  - name: e2e
-#    image: node:14.11-alpine
-#    commands:
-#      - npm run e2e
+  - name: e2e
+    image: zenika/alpine-chrome:89-with-node-14
+    commands:
+      - npm run e2e
 
 trigger:
   event:
