@@ -94,7 +94,7 @@ steps:
       service: cust-testing-newsletter-notification-dashboard
       service_network_security_groups:
         - sg-04532122919e3abd0
-        - sg-0a7eb053aa45ba0c1
+        - sg-0288f31dc8eb2e0be
       service_network_subnets:
         - subnet-061a8876f7f68ea21
         - subnet-0ace4f6a68677187c
